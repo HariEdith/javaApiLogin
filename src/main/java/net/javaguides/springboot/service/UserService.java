@@ -40,14 +40,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            // Use the password encoder to check if the provided password matches the stored encoded password
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return userOptional;
             }
         }
-        return Optional.empty(); // User not found or password does not match
+        return Optional.empty();
     }
-
-
-
 }

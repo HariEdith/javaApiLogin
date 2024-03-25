@@ -43,6 +43,8 @@ public class UserService {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return userOptional;
             }
+        } else {
+            throw  new RuntimeException("User not found");
         }
         return Optional.empty();
     }

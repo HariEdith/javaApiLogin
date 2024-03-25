@@ -10,5 +10,4 @@ public class ShopS {
 	public static void main(String[] args) {
 		SpringApplication.run(ShopS.class, args);
 	}
-
 }

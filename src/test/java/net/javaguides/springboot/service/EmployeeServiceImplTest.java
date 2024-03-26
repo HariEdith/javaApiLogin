@@ -1,6 +1,6 @@
 package net.javaguides.springboot.service;
 
-import net.javaguides.springboot.entity.Employee;
+import net.javaguides.springboot.entity.EmployeeDTO;
 import net.javaguides.springboot.repo.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,14 @@ class EmployeeServiceImplTest {
 
     @Test
     void testGetAllEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1L, "John", "Manager", "john@example.com", "123 Main St", 50000, 35));
-        employees.add(new Employee(2L, "hari", "Engineer", "hari@example.com", "456 north St", 60000, 28));
+        List<EmployeeDTO> employees = new ArrayList<>();
+        employees.add(new EmployeeDTO(1L, "John", "Manager", "john@example.com", "123 Main St", 50000, 35));
+        employees.add(new EmployeeDTO(2L, "hari", "Engineer", "hari@example.com", "456 north St", 60000, 28));
+
 
         when(employeeRepository.findAll()).thenReturn(employees);
 
-        List<Employee> result = employeeService.getAllEmployees();
+        List<EmployeeDTO> result = employeeService.getAllEmployees();
 
         assertEquals(2, result.size());
         assertEquals("John", result.get(0).getEmpName());
@@ -50,11 +51,11 @@ class EmployeeServiceImplTest {
     @Test
     void testGetEmployeeById() {
         Long id = 1L;
-        Employee employee = new Employee(id, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
+        EmployeeDTO employee = new EmployeeDTO(id, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
 
         when(employeeRepository.findById(id)).thenReturn(Optional.of(employee));
 
-        Employee result = employeeService.getEmployeeById(id);
+        EmployeeDTO result = employeeService.getEmployeeById(id);
 
         assertNotNull(result);
         assertEquals("John", result.getEmpName());
@@ -67,12 +68,12 @@ class EmployeeServiceImplTest {
 
     @Test
     void testSaveEmployee() {
-        Employee employee = new Employee(null, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
-        Employee savedEmployee = new Employee(1L, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
+        EmployeeDTO employee = new EmployeeDTO(null, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
+        EmployeeDTO savedEmployee = new EmployeeDTO(1L, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
 
         when(employeeRepository.save(employee)).thenReturn(savedEmployee);
 
-        Employee result = employeeService.saveEmployee(employee);
+        EmployeeDTO result = employeeService.saveEmployee(employee);
 
         assertNotNull(result);
         assertEquals(1L, result.getEmpId());
@@ -81,13 +82,13 @@ class EmployeeServiceImplTest {
     @Test
     void testUpdateEmployee() {
         Long id = 1L;
-        Employee existingEmployee = new Employee(id, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
-        Employee updatedEmployee = new Employee(id, "Alice", "Engineer", "alice@example.com", "456 north St", 60000, 28);
+        EmployeeDTO existingEmployee = new EmployeeDTO(id, "John", "Manager", "john@example.com", "123 Main St", 50000, 35);
+        EmployeeDTO updatedEmployee = new EmployeeDTO(id, "Alice", "Engineer", "alice@example.com", "456 north St", 60000, 28);
 
         when(employeeRepository.findById(id)).thenReturn(Optional.of(existingEmployee));
         when(employeeRepository.save(existingEmployee)).thenReturn(updatedEmployee);
 
-        Employee result = employeeService.updateEmployee(id, updatedEmployee);
+        EmployeeDTO result = employeeService.updateEmployee(id, updatedEmployee);
 
         assertNotNull(result);
         assertEquals("Alice", result.getEmpName());

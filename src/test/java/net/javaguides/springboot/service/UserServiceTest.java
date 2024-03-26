@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import net.javaguides.springboot.entity.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.repo.UserRepository;
 
 
@@ -35,14 +34,14 @@ class UserServiceTest {
 
     @Test
     void testSaveUser() {
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setUsername("testuser");
         user.setPassword("testpassword");
 
         when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
         when(userRepository.save(user)).thenReturn(user);
 
-        User savedUser = userService.saveUser(user);
+        UserDTO savedUser = userService.saveUser(user);
 
         assertNotNull(savedUser);
         assertEquals("testuser", savedUser.getUsername());
@@ -52,13 +51,13 @@ class UserServiceTest {
     @Test
     void testGetUserById() {
         Long userId = 1L;
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setId(userId);
         user.setUsername("testuser");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        Optional<User> retrievedUser = userService.getUserById(userId);
+        Optional<UserDTO> retrievedUser = userService.getUserById(userId);
 
         assertTrue(retrievedUser.isPresent());
         assertEquals(userId, retrievedUser.get().getId());
@@ -67,13 +66,13 @@ class UserServiceTest {
 
     @Test
     void testGetAllUsers() {
-        List<User> userList = new ArrayList<>();
-        userList.add(new User());
-        userList.add(new User());
+        List<UserDTO> userList = new ArrayList<>();
+        userList.add(new UserDTO());
+        userList.add(new UserDTO());
 
         when(userRepository.findAll()).thenReturn(userList);
 
-        List<User> retrievedUsers = userService.getAllUsers();
+        List<UserDTO> retrievedUsers = userService.getAllUsers();
 
         assertEquals(2, retrievedUsers.size());
     }
@@ -91,14 +90,14 @@ class UserServiceTest {
     void testAuthenticateUser_Success() {
         String username = "testuser";
         String password = "testpassword";
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setUsername(username);
         user.setPassword(password);
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(true);
 
-        Optional<User> authenticatedUser = userService.authenticateUser(username, password);
+        Optional<UserDTO> authenticatedUser = userService.authenticateUser(username, password);
 
         assertTrue(authenticatedUser.isPresent());
         assertEquals(username, authenticatedUser.get().getUsername());
@@ -120,14 +119,14 @@ class UserServiceTest {
      void testAuthenticateUser_IncorrectPassword() {
         String username = "testuser";
         String password = "incorrectpassword";
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setUsername(username);
         user.setPassword("correctpassword");
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(false);
 
-        Optional<User> authenticatedUser = userService.authenticateUser(username, password);
+        Optional<UserDTO> authenticatedUser = userService.authenticateUser(username, password);
 
         assertFalse(authenticatedUser.isPresent());
     }

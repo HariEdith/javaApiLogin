@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User {
+public class UserDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class User {
 
     private String password;
 
-    public User() {
+    public UserDTO() {
     }
 
     public Long getId() {
@@ -59,7 +59,7 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String username, String email, String password) {
+    public UserDTO(Long id, String username, String email, String password) {
         super();
         this.id = id;
         this.username = username;
@@ -70,7 +70,7 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        UserDTO user = (UserDTO) o;
         return Objects.equals(id, user.id) &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(email, user.email) &&

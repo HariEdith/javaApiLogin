@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="employee", uniqueConstraints = @UniqueConstraint(columnNames = "empId"))
-public class Employee {
+public class EmployeeDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
@@ -17,7 +17,7 @@ public class Employee {
     private int empAge;
 
 
-    public Employee(Long empId, String empName, String empRole, String empEmail, String empAddress, int empSalary, int empAge) {
+    public EmployeeDTO(Long empId, String empName, String empRole, String empEmail, String empAddress, int empSalary, int empAge) {
         this.empId = empId;
         this.empName = empName;
         this.empRole = empRole;
@@ -27,7 +27,7 @@ public class Employee {
         this.empAge = empAge;
     }
 
-    public Employee() {
+    public EmployeeDTO() {
     }
 
     public Long getEmpId() {
@@ -85,7 +85,5 @@ public class Employee {
     public void setEmpAge(int empAge) {
         this.empAge = empAge;
     }
-
-
 
 }

@@ -1,12 +1,12 @@
 package net.javaguides.springboot.service;
 
-import net.javaguides.springboot.entity.Employee;
+import net.javaguides.springboot.entity.EmployeeDTO;
 import java.util.List;
 
 public interface EmployeeService {
-    List<Employee> getAllEmployees();
-    Employee getEmployeeById(Long id);
-    Employee saveEmployee(Employee employee);
-    Employee updateEmployee(Long id, Employee employee);
+    List<EmployeeDTO> getAllEmployees();
+    EmployeeDTO getEmployeeById(Long id);
+    EmployeeDTO saveEmployee(EmployeeDTO employee);
+    EmployeeDTO updateEmployee(Long id, EmployeeDTO employee);
     void deleteEmployee(Long id);
 }

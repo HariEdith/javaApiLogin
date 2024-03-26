@@ -1,6 +1,6 @@
 package net.javaguides.springboot.controller;
 
-import net.javaguides.springboot.entity.User;
+import net.javaguides.springboot.entity.UserDTO;
 import net.javaguides.springboot.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,12 +32,12 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() {
-        List<User> userList = new ArrayList<>();
-        userList.add(new User(1L, "user1", "user1@example.com", "password1"));
+        List<UserDTO> userList = new ArrayList<>();
+        userList.add(new UserDTO(1L, "user1", "user1@example.com", "password1"));
 
         when(userService.getAllUsers()).thenReturn(userList);
 
-        ResponseEntity<List<User>> responseEntity = userController.getAllUsers();
+        ResponseEntity<List<UserDTO>> responseEntity = userController.getAllUsers();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(userList, responseEntity.getBody());
@@ -45,11 +45,11 @@ class UserControllerTest {
 
     @Test
     void testGetUserById() {
-        User user = new User(1L, "user1", "user1@example.com", "password1");
+        UserDTO user = new UserDTO(1L, "user1", "user1@example.com", "password1");
 
         when(userService.getUserById(1L)).thenReturn(Optional.of(user));
 
-        ResponseEntity<User> responseEntity = userController.getUserById(1L);
+        ResponseEntity<UserDTO> responseEntity = userController.getUserById(1L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(user, responseEntity.getBody());
@@ -57,10 +57,10 @@ class UserControllerTest {
 
     @Test
     void testCreateUser() {
-        User user = new User(1L, "user1", "user1@example.com", "password1");
+        UserDTO user = new UserDTO(1L, "user1", "user1@example.com", "password1");
         when(userService.saveUser(user)).thenReturn(user);
 
-        ResponseEntity<User> responseEntity = userController.createUser(user);
+        ResponseEntity<UserDTO> responseEntity = userController.createUser(user);
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(user, responseEntity.getBody());
@@ -70,13 +70,13 @@ class UserControllerTest {
 
     @Test
     void testUpdateUser() {
-        User user = new User(1L, "user1", "user1@example.com", "password1");
-        User updatedUser = new User(1L, "updatedUser1", "updatedUser1@example.com", "updatedPassword1");
+        UserDTO user = new UserDTO(1L, "user1", "user1@example.com", "password1");
+        UserDTO updatedUser = new UserDTO(1L, "updatedUser1", "updatedUser1@example.com", "updatedPassword1");
 
         when(userService.getUserById(1L)).thenReturn(Optional.of(user));
         when(userService.saveUser(updatedUser)).thenReturn(updatedUser);
 
-        ResponseEntity<User> responseEntity = userController.updateUser(1L, updatedUser);
+        ResponseEntity<UserDTO> responseEntity = userController.updateUser(1L, updatedUser);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(updatedUser, responseEntity.getBody());
@@ -86,20 +86,20 @@ class UserControllerTest {
     void testUpdateUserNotFound() {
         when(userService.getUserById(2L)).thenReturn(Optional.empty());
 
-        ResponseEntity<User> response = userController.updateUser(2L, new User());
+        ResponseEntity<UserDTO> response = userController.updateUser(2L, new UserDTO());
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
         verify(userService, times(1)).getUserById(2L);
-        verify(userService, never()).saveUser(any(User.class));
+        verify(userService, never()).saveUser(any(UserDTO.class));
     }
 
     @Test
     void testLoginUser() {
-        User user = new User(1L, "user1", "user1@example.com", "password1");
+        UserDTO user = new UserDTO(1L, "user1", "user1@example.com", "password1");
         when(userService.authenticateUser("user1", "password1")).thenReturn(Optional.of(user));
 
-        ResponseEntity<User> responseEntity = userController.loginUser(user);
+        ResponseEntity<UserDTO> responseEntity = userController.loginUser(user);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }

@@ -66,30 +66,34 @@ class UserControllerTest {
         assertEquals(user, responseEntity.getBody());
     }
 
-//    @Test
-//    void testUpdateUser() {
-//        User user = new User(1L, "user1", "user1@example.com", "password1");
-//        User updatedUser = new User(1L, "updatedUser1", "updatedUser1@example.com", "updatedPassword1");
-//
-//        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
-//        when(userService.saveUser(updatedUser)).thenReturn(updatedUser);
-//
-//        ResponseEntity<User> responseEntity = userController.updateUser(1L, updatedUser);
-//
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertEquals(updatedUser, responseEntity.getBody());
-//    }
-@Test
-void testUpdateUserNotFound() {
-    when(userService.getUserById(2L)).thenReturn(Optional.empty());
 
-    ResponseEntity<User> response = userController.updateUser(2L, new User());
 
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    @Test
+    void testUpdateUser() {
+        User user = new User(1L, "user1", "user1@example.com", "password1");
+        User updatedUser = new User(1L, "updatedUser1", "updatedUser1@example.com", "updatedPassword1");
 
-    verify(userService, times(1)).getUserById(2L);
-    verify(userService, never()).saveUser(any(User.class));
-}
+        when(userService.getUserById(1L)).thenReturn(Optional.of(user));
+        when(userService.saveUser(updatedUser)).thenReturn(updatedUser);
+
+        ResponseEntity<User> responseEntity = userController.updateUser(1L, updatedUser);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(updatedUser, responseEntity.getBody());
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        when(userService.getUserById(2L)).thenReturn(Optional.empty());
+
+        ResponseEntity<User> response = userController.updateUser(2L, new User());
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+        verify(userService, times(1)).getUserById(2L);
+        verify(userService, never()).saveUser(any(User.class));
+    }
+
     @Test
     void testLoginUser() {
         User user = new User(1L, "user1", "user1@example.com", "password1");

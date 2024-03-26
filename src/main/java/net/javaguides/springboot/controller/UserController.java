@@ -1,10 +1,12 @@
 package net.javaguides.springboot.controller;
 
+import net.javaguides.springboot.entity.UserDTO;
+import net.javaguides.springboot.request.UserRequestModel;
+import net.javaguides.springboot.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import net.javaguides.springboot.entity.UserDTO;
-import net.javaguides.springboot.service.UserService;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
 public class UserController {
+
 
     private final UserService userService;
 
@@ -29,22 +32,25 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserDTO> user = userService.getUserById(id);
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                   .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
-        UserDTO savedUser = userService.saveUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserRequestModel userRequest) {
+        UserDTO userDTO = convertToUserDTO(userRequest);
+        UserDTO savedUser = userService.saveUser(userDTO);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDetails) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestModel userRequest) {
+        UserDTO userDTO = convertToUserDTO(userRequest);
         Optional<UserDTO> user = userService.getUserById(id);
         if (user.isPresent()) {
             UserDTO updatedUser = user.get();
-            updatedUser.setUsername(userDetails.getUsername());
-            updatedUser.setEmail(userDetails.getEmail());
-            updatedUser.setPassword(userDetails.getPassword());
+            updatedUser.setUsername(userDTO.getUsername());
+            updatedUser.setEmail(userDTO.getEmail());
+            updatedUser.setPassword(userDTO.getPassword());
             userService.saveUser(updatedUser);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {
@@ -53,8 +59,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO user) {
-        Optional<UserDTO> authenticatedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
+    public ResponseEntity<UserDTO> loginUser(@RequestBody UserRequestModel userRequest) {
+        UserDTO userDTO = convertToUserDTO(userRequest);
+        Optional<UserDTO> authenticatedUser = userService.authenticateUser(userDTO.getUsername(), userDTO.getPassword());
         if (authenticatedUser.isPresent()) {
             return ResponseEntity.ok().build();
         } else {
@@ -66,5 +73,13 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+
+    private UserDTO convertToUserDTO(UserRequestModel userRequest) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(userRequest.getUsername());
+        userDTO.setEmail(userRequest.getEmail());
+        userDTO.setPassword(userRequest.getPassword());
+        return userDTO;
     }
 }

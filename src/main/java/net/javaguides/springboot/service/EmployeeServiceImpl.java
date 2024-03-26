@@ -1,6 +1,6 @@
 package net.javaguides.springboot.service;
 
-import net.javaguides.springboot.entity.Employee;
+import net.javaguides.springboot.entity.EmployeeDTO;
 import net.javaguides.springboot.repo.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,24 +15,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeDTO> getAllEmployees() {
         return employeeRepository.findAll();
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
-        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+    public EmployeeDTO getEmployeeById(Long id) {
+        Optional<EmployeeDTO> employeeOptional = employeeRepository.findById(id);
         return employeeOptional.orElse(null);
     }
 
     @Override
-    public Employee saveEmployee(Employee employee) {
+    public EmployeeDTO saveEmployee(EmployeeDTO employee) {
         return employeeRepository.save(employee);
     }
 
     @Override
-    public Employee updateEmployee(Long id, Employee employee) {
-        Employee existingEmployee = getEmployeeById(id);
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employee) {
+        EmployeeDTO existingEmployee = getEmployeeById(id);
         if (existingEmployee != null) {
             existingEmployee.setEmpName(employee.getEmpName());
             existingEmployee.setEmpRole(employee.getEmpRole());

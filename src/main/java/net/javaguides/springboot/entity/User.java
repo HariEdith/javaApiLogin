@@ -1,4 +1,5 @@
 package net.javaguides.springboot.entity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

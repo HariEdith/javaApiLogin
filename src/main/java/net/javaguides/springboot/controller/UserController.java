@@ -31,19 +31,20 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserDTO> user = userService.getUserById(id);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))//200-ok
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));//404-not found
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserRequestModel userRequest) {
         UserDTO userDTO = convertToUserDTO(userRequest);
         UserDTO savedUser = userService.saveUser(userDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);//201-created
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestModel userRequest) {
+        //requestModel to DTO
         UserDTO userDTO = convertToUserDTO(userRequest);
         Optional<UserDTO> user = userService.getUserById(id);
         if (user.isPresent()) {
@@ -51,6 +52,7 @@ public class UserController {
             updatedUser.setUsername(userDTO.getUsername());
             updatedUser.setEmail(userDTO.getEmail());
             updatedUser.setPassword(userDTO.getPassword());
+            //saveUser method from userService
             userService.saveUser(updatedUser);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {

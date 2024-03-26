@@ -1,6 +1,8 @@
 package net.javaguides.springboot.controller;
 
+
 import net.javaguides.springboot.entity.EmployeeDTO;
+import net.javaguides.springboot.request.EmployeeRequestModel;
 import net.javaguides.springboot.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,8 @@ import java.util.List;
 public class EmployeeController {
 
 
-
     private final EmployeeService employeeService;
+
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
@@ -33,14 +35,14 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeRequest) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@RequestBody EmployeeRequestModel employeeRequest) {
         EmployeeDTO employeeDTO = convertToEmployeeDTO(employeeRequest);
         EmployeeDTO savedEmployee = employeeService.saveEmployee(employeeDTO);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeRequest) {
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestModel employeeRequest) {
         EmployeeDTO employeeDTO = convertToEmployeeDTO(employeeRequest);
         EmployeeDTO updatedEmployee = employeeService.updateEmployee(id, employeeDTO);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
@@ -52,7 +54,7 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    private EmployeeDTO convertToEmployeeDTO(EmployeeDTO employeeRequest) {
+    private EmployeeDTO convertToEmployeeDTO(EmployeeRequestModel employeeRequest) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setEmpName(employeeRequest.getEmpName());
         employeeDTO.setEmpRole(employeeRequest.getEmpRole());

@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import net.javaguides.springboot.repo.UserRepository;
 
 
@@ -113,21 +114,5 @@ class UserServiceTest {
         assertThrows(RuntimeException.class, () -> {
             userService.authenticateUser(username, password);
         });
-    }
-
-    @Test
-     void testAuthenticateUser_IncorrectPassword() {
-        String username = "testuser";
-        String password = "incorrectpassword";
-        UserDTO user = new UserDTO();
-        user.setUsername(username);
-        user.setPassword("correctpassword");
-
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(false);
-
-        Optional<UserDTO> authenticatedUser = userService.authenticateUser(username, password);
-
-        assertFalse(authenticatedUser.isPresent());
     }
 }

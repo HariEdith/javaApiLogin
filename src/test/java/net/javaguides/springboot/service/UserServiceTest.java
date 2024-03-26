@@ -17,7 +17,7 @@ import net.javaguides.springboot.entity.User;
 import net.javaguides.springboot.repo.UserRepository;
 
 
-public class UserServiceTest {
+class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -34,7 +34,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testSaveUser() {
+    void testSaveUser() {
         User user = new User();
         user.setUsername("testuser");
         user.setPassword("testpassword");
@@ -50,7 +50,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserById() {
+    void testGetUserById() {
         Long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -66,7 +66,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetAllUsers() {
+    void testGetAllUsers() {
         List<User> userList = new ArrayList<>();
         userList.add(new User());
         userList.add(new User());
@@ -79,7 +79,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    void testDeleteUser() {
         Long userId = 1L;
 
         userService.deleteUser(userId);
@@ -88,7 +88,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAuthenticateUser_Success() {
+    void testAuthenticateUser_Success() {
         String username = "testuser";
         String password = "testpassword";
         User user = new User();
@@ -105,7 +105,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAuthenticateUser_UserNotFound() {
+    void testAuthenticateUser_UserNotFound() {
         String username = "nonexistentuser";
         String password = "testpassword";
 
@@ -117,7 +117,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAuthenticateUser_IncorrectPassword() {
+     void testAuthenticateUser_IncorrectPassword() {
         String username = "testuser";
         String password = "incorrectpassword";
         User user = new User();

@@ -52,6 +52,7 @@ public class UserController {
             updatedUser.setUsername(userDTO.getUsername());
             updatedUser.setEmail(userDTO.getEmail());
             updatedUser.setPassword(userDTO.getPassword());
+
             //saveUser method from userService
             userService.saveUser(updatedUser);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);

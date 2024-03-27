@@ -50,16 +50,14 @@ class EmployeeControllerTest {
 
     @Test
     void testGetEmployeeById() {
-        // Prepare
+
         Long employeeId = 1L;
         EmployeeDTO employee = new EmployeeDTO(employeeId, "John", "Manager", "john@example.com", "Address 1", 50000, 30);
 
         when(employeeService.getEmployeeById(employeeId)).thenReturn(employee);
 
-        // Execute
         ResponseEntity<EmployeeDTO> responseEntity = employeeController.getEmployeeById(employeeId);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(employee, responseEntity.getBody());
         verify(employeeService, times(1)).getEmployeeById(employeeId);
@@ -67,7 +65,7 @@ class EmployeeControllerTest {
 
     @Test
     void testCreateEmployee() {
-        // Prepare
+
         EmployeeRequestModel employeeRequest = new EmployeeRequestModel();
         employeeRequest.setEmpName("John");
         employeeRequest.setEmpRole("Manager");
@@ -80,10 +78,8 @@ class EmployeeControllerTest {
 
         when(employeeService.saveEmployee(any())).thenReturn(employeeDTO);
 
-        // Execute
         ResponseEntity<EmployeeDTO> responseEntity = employeeController.createEmployee(employeeRequest);
 
-        // Verify
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(employeeDTO, responseEntity.getBody());
         verify(employeeService, times(1)).saveEmployee(any());
@@ -91,7 +87,7 @@ class EmployeeControllerTest {
 
     @Test
     void testUpdateEmployee() {
-        // Prepare
+
         Long employeeId = 1L;
         EmployeeRequestModel employeeRequest = new EmployeeRequestModel();
         employeeRequest.setEmpName("John");
@@ -104,10 +100,8 @@ class EmployeeControllerTest {
         EmployeeDTO updatedEmployeeDTO = new EmployeeDTO(employeeId, "John", "Manager", "john@example.com", "Address 1", 60000, 32);
         when(employeeService.updateEmployee(eq(employeeId), any())).thenReturn(updatedEmployeeDTO);
 
-        // Execute
         ResponseEntity<EmployeeDTO> responseEntity = employeeController.updateEmployee(employeeId, employeeRequest);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(updatedEmployeeDTO, responseEntity.getBody());
         verify(employeeService, times(1)).updateEmployee(eq(employeeId), any());
@@ -115,13 +109,11 @@ class EmployeeControllerTest {
 
     @Test
     void testDeleteEmployee() {
-        // Prepare
+
         Long employeeId = 1L;
 
-        // Execute
         ResponseEntity<Void> responseEntity = employeeController.deleteEmployee(employeeId);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(employeeService, times(1)).deleteEmployee(employeeId);
     }

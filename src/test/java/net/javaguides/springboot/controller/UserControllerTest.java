@@ -33,17 +33,17 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() {
-        // Prepare
+
         List<UserDTO> users = new ArrayList<>();
         users.add(new UserDTO(1L, "testuser1", "test1@example.com", "password1"));
         users.add(new UserDTO(2L, "testuser2", "test2@example.com", "password2"));
 
         when(userService.getAllUsers()).thenReturn(users);
 
-        // Execute
+
         ResponseEntity<List<UserDTO>> responseEntity = userController.getAllUsers();
 
-        // Verify
+
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(users, responseEntity.getBody());
         verify(userService, times(1)).getAllUsers();
@@ -51,16 +51,13 @@ class UserControllerTest {
 
     @Test
     void testGetUserById() {
-        // Prepare
         Long userId = 1L;
         UserDTO user = new UserDTO(userId, "testuser", "test@example.com", "password");
 
         when(userService.getUserById(userId)).thenReturn(Optional.of(user));
 
-        // Execute
         ResponseEntity<UserDTO> responseEntity = userController.getUserById(userId);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(user, responseEntity.getBody());
         verify(userService, times(1)).getUserById(userId);
@@ -68,7 +65,7 @@ class UserControllerTest {
 
     @Test
     void testUpdateUser() {
-        // Prepare
+
         Long userId = 1L;
         UserRequestModel userRequest = new UserRequestModel();
         userRequest.setUsername("updateduser");
@@ -79,10 +76,8 @@ class UserControllerTest {
         when(userService.getUserById(userId)).thenReturn(Optional.of(updatedUserDTO));
         when(userService.saveUser(updatedUserDTO)).thenReturn(updatedUserDTO);
 
-        // Execute
         ResponseEntity<UserDTO> responseEntity = userController.updateUser(userId, userRequest);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(updatedUserDTO, responseEntity.getBody());
         verify(userService, times(1)).getUserById(userId);
@@ -90,7 +85,7 @@ class UserControllerTest {
     }
     @Test
     void testLoginUser() {
-        // Prepare
+
         UserRequestModel userRequest = new UserRequestModel();
         userRequest.setUsername("testuser");
         userRequest.setEmail("test@example.com");
@@ -103,27 +98,20 @@ class UserControllerTest {
 
         when(userService.authenticateUser(userDTO.getUsername(), userDTO.getPassword())).thenReturn(Optional.of(userDTO));
 
-        // Execute
         ResponseEntity<UserDTO> responseEntity = userController.loginUser(userRequest);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).authenticateUser(userDTO.getUsername(), userDTO.getPassword());
     }
 
     @Test
     void testDeleteUser() {
-        // Prepare
+
         Long userId = 1L;
 
-        // Execute
         ResponseEntity<Void> responseEntity = userController.deleteUser(userId);
 
-        // Verify
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).deleteUser(userId);
     }
-
-
-
 }
